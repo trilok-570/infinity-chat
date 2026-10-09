@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>INFINITY CHAT</title>
+    <link rel="icon" type="image/jpeg" href="/infinity-chat-logo.jpeg?v=20261009" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div class="floating-decor" aria-hidden="true">
+        <span class="decor-heart heart-one">♥</span>
+        <span class="decor-flower flower-one">✿</span>
+        <span class="decor-heart heart-two">♡</span>
+        <span class="decor-flower flower-two">❀</span>
+        <span class="decor-heart heart-three">♥</span>
+      </div>
+
+      <div id="auth-screen" class="screen active">
+        <div class="auth-card">
+          <div class="brand-block">
+            <img class="brand-logo" src="/infinity-chat-logo.jpeg?v=20261009" alt="Infinity Chat — Chat Without Limits" />
+            <span class="eyebrow">A LITTLE PLACE TO CONNECT</span>
+            <p>Send a little love, one message at a time.</p>
+          </div>
+
+          <div class="auth-tabs">
+            <button class="tab-button active" data-tab="login">Login</button>
+            <button class="tab-button" data-tab="register">Register</button>
+          </div>
+
+          <form id="login-form" class="auth-form active">
+            <label>
+              Username
+              <input name="username" type="text" placeholder="your username" autocomplete="username" required />
+            </label>
+            <label>
+              Password
+              <span class="password-input-wrap">
+                <input name="password" type="password" placeholder="••••••••" autocomplete="current-password" required />
+                <button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false">Show</button>
+              </span>
+            </label>
+            <button type="submit">Log in</button>
+          </form>
+
+          <form id="register-form" class="auth-form">
+            <label>
+              Username
+              <input name="username" type="text" placeholder="johnsmith" autocomplete="username" required />
+            </label>
+            <label>
+              Password
+              <span class="password-input-wrap">
+                <input name="password" type="password" placeholder="Create a strong password" minlength="8" pattern="(?=.*[a-z])(?=.*[A-Z])(?=(?:.*[0-9]){2,})(?=.*[^A-Za-z0-9]).{8,}" title="At least 8 characters, with uppercase and lowercase letters, 2 digits, and a special character." autocomplete="new-password" required />
+                <button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false">Show</button>
+              </span>
+              <span class="password-hint">At least 8 characters: uppercase + lowercase, 2 digits, and 1 special character.</span>
+            </label>
+            <button type="submit">Create account</button>
+          </form>
+
+          <div id="auth-error" class="message error hidden"></div>
+        </div>
+      </div>
+
+      <div id="chat-screen" class="screen">
+        <aside class="sidebar">
+          <div class="sidebar-header">
+            <div class="sidebar-brand">
+              <img src="/infinity-chat-logo.jpeg?v=20261009" alt="" />
+              <div>
+                <span class="eyebrow">INFINITY CHAT</span>
+                <h2>Chat Without Limits</h2>
+              </div>
+            </div>
+          </div>
+
+          <button id="profile-settings-button" class="profile-card" type="button">
+            <span id="current-profile-avatar" class="avatar profile-avatar">?</span>
+            <span class="profile-card-copy">
+              <strong id="current-display-name">Your profile</strong>
+              <span id="current-username"></span>
+              <span class="profile-online-status"><i></i> Online</span>
+            </span>
+            <span class="profile-settings-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.7-1.4-2.4 1.4-1.1a8 8 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.7 1l1.7-.7 1.4 2.4-1.4 1.1a8 8 0 0 1 0 2z"/></svg></span>
+          </button>
+
+          <nav class="primary-navigation" aria-label="Main navigation">
+            <button class="navigation-item active" type="button" data-view="chats" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></svg>Chats<span id="nav-unread-count" class="nav-unread-count hidden"></span></button>
+            <button class="navigation-item" type="button" data-view="friends"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>Friends</button>
+            <button class="navigation-item" type="button" data-view="groups"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M20 8v6m3-3h-6"/></svg>Groups</button>
+            <button class="navigation-item" type="button" data-view="archived"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v11h14V8m-9 4h4"/></svg>Archived Chats</button>
+            <button class="navigation-item" type="button" data-view="profile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/></svg>Profile</button>
+            <button class="navigation-item" type="button" data-view="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.7-1.4-2.4 1.4-1.1a8 8 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.7 1l1.7-.7 1.4 2.4-1.4 1.1a8 8 0 0 1 0 2z"/></svg>Settings</button>
+            <button id="logout-button" class="navigation-item navigation-logout" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5m5 5H9"/></svg>Logout</button>
+          </nav>
+        </aside>
+
+        <aside id="list-panel" class="list-panel">
+          <div class="list-panel-heading">
+            <div>
+              <span class="eyebrow">YOUR SPACE</span>
+              <h2 id="list-panel-title">Chats</h2>
+            </div>
+            <div class="list-heading-actions">
+              <span id="people-count" class="people-count"></span>
+              <button id="create-group-button" class="chat-action-button hidden" type="button">New group</button>
+            </div>
+          </div>
+          <label id="conversation-search-wrap" class="user-search">
+            <span aria-hidden="true">⌕</span>
+            <input id="conversation-search-input" type="search" placeholder="Search conversations" aria-label="Search conversations" autocomplete="off" />
+          </label>
+          <label id="user-search-wrap" class="user-search hidden">
+            <span aria-hidden="true">⌕</span>
+            <input id="user-search-input" type="search" placeholder="Search friends by username" aria-label="Search friends by username" autocomplete="off" />
+            <button id="clear-user-search" class="clear-search hidden" type="button" aria-label="Clear search">×</button>
+          </label>
+          <div id="conversation-filters" class="conversation-filters" role="group" aria-label="Filter conversations">
+            <button class="conversation-filter active" type="button" data-filter="all" aria-pressed="true">All</button>
+            <button class="conversation-filter" type="button" data-filter="direct" aria-pressed="false">Direct</button>
+            <button class="conversation-filter" type="button" data-filter="groups" aria-pressed="false">Groups</button>
+          </div>
+          <div class="list-scroll-area">
+            <div id="conversation-view" class="conversation-panel">
+              <div class="people-heading">
+                <h3 id="conversation-section-title">Recent chats</h3>
+                <span class="section-note">Direct</span>
+              </div>
+              <ul id="conversation-list"></ul>
+            </div>
+            <div id="friends-view" class="people-panel hidden">
+            <div class="people-heading">
+                <h3>All people</h3>
+            </div>
+            <ul id="people-list" aria-live="polite"></ul>
+          </div>
+          </div>
+        </aside>
+
+        <main class="chat-panel">
+          <header class="chat-header">
+            <div class="chat-contact">
+              <button id="mobile-chat-back" class="mobile-chat-back" type="button" aria-label="Back to conversations">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+              <div id="chat-contact-avatar" class="avatar chat-contact-avatar">∞</div>
+              <div>
+                <h2 id="chat-title">Select a conversation</h2>
+                <div id="chat-status" class="chat-status">Choose someone to start chatting</div>
+              </div>
+            </div>
+            <div class="chat-header-actions">
+              <button id="view-chat-profile" class="chat-action-button hidden" type="button">View profile</button>
+              <button id="archive-chat-button" class="chat-action-button hidden" type="button">Archive</button>
+              <input id="message-search-input" class="message-search hidden" type="search" placeholder="Find in chat" aria-label="Search messages in this conversation" />
+              <button id="conversation-info-button" class="chat-action-button info-toggle" type="button" aria-label="Show conversation information" aria-expanded="false" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg></button>
+            </div>
+          </header>
+
+          <div id="messages" class="messages"></div>
+
+          <div class="composer">
+            <div id="typing-indicator" class="typing-indicator hidden">Typing...</div>
+            <div id="recording-indicator" class="recording-indicator hidden" role="status">
+              <span class="recording-pulse-dot" aria-hidden="true"></span>
+              <span id="recording-timer">Recording 0:00</span>
+              <button id="cancel-voice-recording" type="button">Cancel</button>
+            </div>
+            <div id="attachment-preview" class="attachment-preview hidden"></div>
+            <div class="composer-row">
+              <textarea id="message-input" rows="1" placeholder="Type a message…" autocomplete="off" aria-label="Type a message"></textarea>
+              <input id="attachment-input" type="file" accept="image/jpeg,image/png,image/webp,image/gif,application/pdf,text/plain,text/csv,.doc,.docx,.xls,.xlsx" hidden />
+              <button id="attach-file-button" class="composer-tool-button" type="button" aria-label="Attach image or document" title="Attach image or document"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21.4 11.1-8.5 8.5a5.5 5.5 0 0 1-7.8-7.8l9.2-9.2a3.7 3.7 0 0 1 5.2 5.2l-9.2 9.2a1.8 1.8 0 0 1-2.6-2.6l8.5-8.5"/></svg></button>
+              <div class="emoji-picker-wrap">
+                <button id="emoji-button" class="composer-tool-button" type="button" aria-label="Insert emoji" title="Insert emoji" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></button>
+                <div id="emoji-picker" class="emoji-picker hidden" role="group" aria-label="Choose an emoji"></div>
+              </div>
+              <button id="voice-message-button" class="composer-tool-button" type="button" aria-label="Record voice message" title="Record voice message"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2m-7 9v3m-4 0h8"/></svg></button>
+              <button id="send-button">Send</button>
+            </div>
+          </div>
+        </main>
+
+        <aside id="conversation-info-panel" class="conversation-info-panel hidden" aria-label="Conversation information">
+          <div class="info-panel-heading">
+            <h2>Conversation info</h2>
+            <button id="close-info-panel" class="dialog-close" type="button" aria-label="Hide conversation information">×</button>
+          </div>
+          <div id="info-panel-avatar" class="avatar info-panel-avatar">∞</div>
+          <h3 id="info-panel-name">Select a conversation</h3>
+          <p id="info-panel-username" class="chat-status"></p>
+          <div class="info-panel-section">
+            <span>About</span>
+            <p id="info-panel-about">Conversation details will appear here.</p>
+          </div>
+          <div id="group-members-section" class="info-panel-section hidden">
+            <div class="group-members-heading">
+              <span>Members</span>
+              <button id="add-group-members-button" class="chat-action-button hidden" type="button">Add</button>
+            </div>
+            <ul id="group-member-list" class="group-member-list"></ul>
+          </div>
+          <button id="info-panel-profile-button" class="chat-action-button hidden" type="button">View profile</button>
+        </aside>
+      </div>
+
+      <dialog id="profile-dialog" class="profile-dialog">
+        <form id="profile-form" class="profile-form" novalidate>
+          <div class="profile-dialog-header">
+            <div>
+              <span class="eyebrow">YOUR SPACE</span>
+              <h2>Edit Profile</h2>
+            </div>
+            <button id="close-profile-dialog" class="dialog-close" type="button" aria-label="Close profile settings">×</button>
+          </div>
+
+          <div class="profile-photo-editor">
+            <div id="profile-photo-preview" class="avatar profile-photo-preview">?</div>
+            <div class="profile-photo-actions">
+              <label id="upload-profile-photo" class="photo-select-button" for="profile-photo-input">Upload Photo</label>
+              <label id="change-profile-photo" class="photo-select-button hidden" for="profile-photo-input">Change Photo</label>
+              <button id="remove-profile-photo" class="remove-photo-button" type="button">Remove photo</button>
+              <input id="profile-photo-input" type="file" accept="image/jpeg,image/png,image/webp" hidden />
+              <span class="password-hint">Images are resized before saving. Maximum saved size: 512 KB.</span>
+            </div>
+          </div>
+          <div class="profile-privacy-row">
+            <span class="profile-label">Profile photo visibility</span>
+            <select id="profile-photo-visibility" class="profile-visibility-select" aria-label="Profile photo visibility">
+              <option value="public">🌐 Public</option>
+              <option value="private">🔒 Private</option>
+            </select>
+          </div>
+
+          <div class="profile-field">
+            <div class="profile-privacy-row">
+              <label class="profile-label" for="profile-display-name">Full Name</label>
+              <select id="profile-full-name-visibility" class="profile-visibility-select" aria-label="Full Name visibility">
+                <option value="public">🌐 Public</option>
+                <option value="private">🔒 Private</option>
+              </select>
+            </div>
+            <input id="profile-display-name" class="profile-text-input" type="text" maxlength="40" required autocomplete="name" />
+          </div>
+
+          <div class="profile-field">
+            <div class="profile-privacy-row">
+              <label class="profile-label" for="profile-nickname">Nickname / Display Name <span>Optional</span></label>
+              <select id="profile-nickname-visibility" class="profile-visibility-select" aria-label="Nickname visibility">
+                <option value="public">🌐 Public</option>
+                <option value="private">🔒 Private</option>
+              </select>
+            </div>
+            <input id="profile-nickname" class="profile-text-input" type="text" maxlength="32" placeholder="A name friends can call you" autocomplete="nickname" />
+          </div>
+
+          <section class="profile-section">
+            <div class="profile-section-heading">
+              <h3>Personal details</h3>
+              <span>Optional</span>
+            </div>
+            <div class="profile-field">
+              <div class="profile-privacy-row">
+                <label class="profile-label" for="profile-date-of-birth">Date of Birth</label>
+                <select id="profile-dob-visibility" class="profile-visibility-select" aria-label="Date of birth visibility">
+                  <option value="public">🌐 Public</option>
+                  <option value="private">🔒 Private</option>
+                </select>
+              </div>
+              <div id="profile-date-input-wrap" class="profile-date-input-wrap">
+                <span id="profile-date-placeholder" class="profile-date-placeholder" aria-hidden="true">Select your date of birth</span>
+                <input id="profile-date-of-birth" class="profile-text-input" type="date" autocomplete="bday" aria-label="Date of birth" aria-describedby="profile-date-hint" />
+                <button id="clear-profile-date" class="profile-date-clear hidden" type="button" aria-label="Clear date of birth" title="Clear date of birth">×</button>
+              </div>
+              <span id="profile-date-hint" class="profile-date-hint">Optional. Choose a date today or earlier.</span>
+            </div>
+            <div class="profile-field">
+              <div class="profile-privacy-row">
+                <label class="profile-label" for="profile-gender">Gender</label>
+                <select id="profile-gender-visibility" class="profile-visibility-select" aria-label="Gender visibility">
+                  <option value="public">🌐 Public</option>
+                  <option value="private">🔒 Private</option>
+                </select>
+              </div>
+              <select id="profile-gender" class="profile-text-input">
+                <option value="">Select</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="non-binary">Non-binary</option>
+                <option value="prefer-not-to-say">Prefer not to say</option>
+                <option value="custom">Custom</option>
+              </select>
+              <input id="profile-custom-gender" class="profile-text-input hidden" type="text" maxlength="40" placeholder="Enter your gender (optional)" aria-label="Custom gender" />
+            </div>
+          </section>
+          <div id="profile-error" class="message error hidden"></div>
+
+          <div class="profile-dialog-actions">
+            <button id="cancel-profile-button" class="ghost-button" type="button">Cancel</button>
+            <button id="profile-save-button" class="profile-save-button" type="submit">
+              <span class="profile-save-label">Save Changes</span>
+              <span class="profile-save-loading hidden" aria-hidden="true"></span>
+            </button>
+          </div>
+        </form>
+      </dialog>
+      <dialog id="user-profile-dialog" class="profile-dialog user-profile-dialog">
+        <div class="profile-form">
+          <div class="profile-dialog-header">
+            <div>
+              <span class="eyebrow">PROFILE</span>
+              <h2 id="view-profile-title">User profile</h2>
+            </div>
+            <button id="close-user-profile-dialog" class="dialog-close" type="button" aria-label="Close user profile">×</button>
+          </div>
+          <div class="view-profile-identity">
+            <div id="view-profile-avatar" class="avatar profile-photo-preview">?</div>
+            <div>
+              <strong id="view-profile-name"></strong>
+              <span id="view-profile-username"></span>
+            </div>
+          </div>
+          <div id="view-profile-private" class="profile-private-notice hidden"></div>
+          <section id="view-profile-details" class="profile-section">
+            <div class="profile-section-heading"><h3>Personal details</h3></div>
+            <dl class="view-profile-details">
+              <div><dt>Full Name</dt><dd id="view-profile-full-name"></dd></div>
+              <div><dt>Nickname</dt><dd id="view-profile-nickname"></dd></div>
+              <div><dt>Date of birth</dt><dd id="view-profile-dob"></dd></div>
+              <div><dt>Gender</dt><dd id="view-profile-gender"></dd></div>
+            </dl>
+          </section>
+          <div class="profile-dialog-actions">
+            <button id="message-profile-user" class="profile-save-button" type="button">Message</button>
+          </div>
+        </div>
+      </dialog>
+      <dialog id="chat-pin-dialog" class="profile-dialog chat-pin-dialog">
+        <form id="chat-pin-form" class="profile-form" novalidate>
+          <div class="profile-dialog-header">
+            <div>
+              <span class="eyebrow">PRIVATE SPACE</span>
+              <h2 id="chat-pin-title">Unlock this chat</h2>
+            </div>
+            <button id="close-chat-pin-dialog" class="dialog-close" type="button" aria-label="Close chat PIN dialog">×</button>
+          </div>
+          <p id="chat-pin-description" class="chat-pin-description">Enter your chat PIN to reveal this conversation.</p>
+          <label class="profile-label" for="chat-pin-input">Chat PIN</label>
+          <input id="chat-pin-input" class="profile-text-input" type="password" inputmode="numeric" autocomplete="off" minlength="6" maxlength="12" pattern="[0-9]{6,12}" required />
+          <div id="chat-pin-error" class="message error hidden"></div>
+          <div class="profile-dialog-actions">
+            <button id="cancel-chat-pin-button" class="ghost-button" type="button">Cancel</button>
+            <button id="submit-chat-pin-button" class="profile-save-button" type="submit">Unlock chat</button>
+          </div>
+        </form>
+      </dialog>
+
+      <dialog id="group-dialog" class="profile-dialog">
+        <form id="group-form" class="profile-form">
+          <div class="profile-dialog-header">
+            <div><span class="eyebrow">TOGETHER</span><h2 id="group-dialog-title">Create a group</h2></div>
+            <button id="close-group-dialog" class="dialog-close" type="button" aria-label="Close group dialog">×</button>
+          </div>
+          <label class="profile-label" for="group-name-input">Group name</label>
+          <input id="group-name-input" class="profile-text-input" maxlength="60" required placeholder="Weekend plans" />
+          <div id="group-people-list" class="group-people-list"></div>
+          <div id="group-dialog-error" class="message error hidden" role="alert"></div>
+          <div class="profile-dialog-actions">
+            <button id="cancel-group-button" class="remove-photo-button" type="button">Cancel</button>
+            <button id="submit-group-button" class="profile-save-button" type="submit">Create group</button>
+          </div>
+        </form>
+      </dialog>
+
+      <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+      <div id="profile-save-notice" class="profile-save-notice hidden" role="status" aria-live="polite"></div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/app.js"></script>
+  </body>
+</html>
